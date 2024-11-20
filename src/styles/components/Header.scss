@@ -1,0 +1,13 @@
+header {
+    width: 100vw;
+    min-height: 55px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid black;
+    padding: 0 20px;
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+    z-index: 10;
+}

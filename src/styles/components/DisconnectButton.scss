@@ -1,0 +1,17 @@
+.disconnect-button {
+    background-color: #FFF;
+    color: #000;
+    border: 2px solid black;
+    padding: 6px 12px;
+    font-size: 12px;
+    transition: .3s;
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+
+    &:hover {
+        background-color: $accent;
+        border: 2px solid $accent;
+        color: #FFF;
+    }
+}

@@ -1,0 +1,29 @@
+.tasklist-header-element {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 10px 0;
+    cursor: pointer;
+
+    .tasklist-header-element-label {
+        font-family: "Poppins", sans-serif;
+        font-size: 19px;
+        font-weight: 700;
+
+        @media (max-width: 580px) {
+            font-size: 17px;
+        }
+    }
+
+    .tasklist-header-element-indicator {
+        transition: 0.2s;
+
+        &:not(.active){
+            transform: rotate(180deg);
+        }
+
+        &.active {
+            transform: rotate(0);
+        }
+    }
+}

@@ -1,0 +1,56 @@
+.auth-input-container {
+    width: 100%;
+
+    .auth-input-label {
+        width: 100%;
+        font-family: "Poppins", sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .auth-input-wrapper {
+        width: 100%;
+        height: 36px;
+        position: relative;
+
+        .auth-input {
+            width: 100%;
+            height: 100%;
+            padding-left: 6px;
+        }
+        
+        .auth-input[type='password']{
+            padding-right: 36px;
+        }
+
+        .auth-input[type='password']::-ms-reveal {
+            display: none;
+        }
+
+        .input-reveal-button {
+            width: 36px;
+            height: 36px;
+            position: absolute;
+            top: 0;
+            right: 0;
+            border: none;
+            display: grid;
+            place-items: center;
+            cursor: pointer;
+            background-color: transparent;
+
+            .input-reveal-icon {
+                width: 20px;
+                height: 20px;
+            }
+        }
+    }
+
+    &:not(:last-of-type) {
+        margin-bottom: 16px;
+    }
+
+    &:last-of-type {
+        margin-bottom: 6px;
+    }
+}

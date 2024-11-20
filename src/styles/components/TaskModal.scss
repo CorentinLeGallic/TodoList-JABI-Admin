@@ -1,0 +1,35 @@
+.task-form-input-container {
+    padding: 9px 0;
+
+    .task-form-input {
+        padding: 9px 10px;
+        font-family: sans-serif;
+        font-size: 14px;
+
+        &.task-form-text-input {
+            width: 100%;
+            border: 1px solid #949494;
+            border-radius: 5px;
+        }
+
+        &.task-form-textarea {
+            width: 100%;
+            resize: none;
+            border: 1px solid #949494;
+            border-radius: 5px;
+        }
+    }
+
+    .task-form-select {
+        padding: 2px 5px;
+        border: 1px solid #949494;
+        border-radius: 5px;
+        margin-bottom: 6px;
+        max-width: 100%;
+        width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        word-break: break-all;
+        white-space: nowrap;
+    }
+}

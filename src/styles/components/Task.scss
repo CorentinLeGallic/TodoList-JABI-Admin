@@ -1,0 +1,216 @@
+.task {
+    overflow: hidden;
+
+    .task-header {
+        display: flex;
+        align-items: center;
+        height: 50px;
+
+        .task-checkbox {
+            width: 30px;
+            height: 30px;
+            margin-left: 10px;
+            cursor: pointer;
+            flex-shrink: 0;
+            appearance: none;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            transition: .2s;
+
+            &::before {
+                content: "";
+                display: block;
+                width: 1em;
+                height: 1em;
+                clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+                transform: rotate(10deg);
+                transition: .1s;
+            }
+
+            &:not(.completed){
+                border: 2px solid #000;
+
+                &::before {
+                    background-color: transparent;
+                }
+            }
+
+            &.completed {
+                background-color: green;
+                border: 2px solid green;
+
+                &::before {
+                    background-color: #FFF;
+                }
+            }
+        }
+
+        .task-title {
+            font-family: "Poppins", sans-serif;
+            font-size: 18px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            word-break: break-all;
+            white-space: nowrap;
+            margin-left: 10px;
+
+            width: $task-name-width1;
+
+            @media (max-width: 400px) {
+                font-size: 15px;
+            }
+        }
+
+        .task-owner {
+            font-family: "Poppins", sans-serif;
+            font-size: 18px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            word-break: break-all;
+            white-space: nowrap;
+            margin-right: 10px;
+            text-align: center;
+
+            width: $task-owner-width1;
+
+            @media (max-width: 400px) {
+                font-size: 16px;
+            }
+        }
+
+        .task-category-container {
+            text-align: center;
+            text-transform: uppercase;
+            font-family: "Poppins", sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            color: #FFF;
+            height: 30px;
+            border-radius: 15px;
+            display: grid;
+            place-items: center;
+            transition: .1s;
+            background-color: #4EB699;
+            padding: 0 15px;
+            width: $task-category-width1;
+
+            @media (max-width: 400px) {
+                font-size: 12px;
+            }
+
+            .task-category {
+                width: calc(100% - 10px);
+                overflow: hidden;
+                text-overflow: ellipsis;
+                word-break: break-all;
+                white-space: nowrap;
+            }
+        }
+
+        @media (max-width: 730px) {
+            .task-title {
+                width: $task-name-width2;
+            }
+    
+            .task-owner {  
+                width: $task-owner-width2;
+            }
+    
+            .task-category-container {
+                width: $task-category-width2;
+            }
+        }
+
+        .task-reveal {
+            width: 40px;
+            height: 40px;
+            flex-shrink: 0;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            margin: 0 5px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+
+            .task-reveal-icon {
+                transition: 0.2s;
+
+                &:not(.active){
+                    transform: rotate(90deg);
+                }
+
+                &.active {
+                    transform: rotate(0);
+                }
+            }
+        }
+    }
+
+    .task-details {
+        overflow: hidden;
+        transition: 0.2s;
+        padding-left: 50px;
+
+        &:not(.visible){
+            height: 0;
+        }
+
+        &.visible:not(.editable) {
+            height: 33px;
+        }
+
+        &.visible.editable {
+            height: 75px;
+        }
+
+        .task-description {
+            font-family: "Poppins";
+            font-size: 15px;
+            margin: 5px 0;
+            padding-right: 10px;
+            height: 23px;
+            width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            word-break: break-all;
+            white-space: nowrap;
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+
+            .task-action {
+                width: 100%;
+                border-radius: 0;
+                font-family: "Poppins";
+                cursor: pointer;
+                height: 30px;
+
+                &.edit-task {
+                    border: 2px solid #000;
+                    background-color: #fff;
+                    transition: background-color 0.2s;
+
+                    &:hover {
+                        background-color: #ebebeb;
+                    }
+                }
+
+                &.delete-task {
+                    border: none;
+                    background-color: #ce181e;
+                    color: #fff;
+                    transition: background-color 0.2s;
+            
+                    &:hover {
+                      background-color: #f5494e;
+                    }
+                }
+            }
+        }
+    }
+}
