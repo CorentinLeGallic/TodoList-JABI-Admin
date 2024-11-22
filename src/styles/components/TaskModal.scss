@@ -20,6 +20,27 @@
         }
     }
 
+    .task-form-radio-container {
+        display: inline;
+        margin: 0 5px;
+
+        &:first-of-type {
+            margin-left: 8px;
+        }
+
+        .task-form-radio {
+            cursor: pointer;
+        }
+
+        .task-form-radio-label {
+            cursor: pointer;
+            padding-left: 3px;
+            font-family: sans-serif;
+            font-size: 14px;
+            position: relative;
+        }
+    }
+
     .task-form-select {
         padding: 2px 5px;
         border: 1px solid #949494;

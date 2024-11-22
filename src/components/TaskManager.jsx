@@ -8,6 +8,7 @@ import AddTaskModal from './AddTaskModal';
 import TasklistHeaderElement from './TasklistHeaderElement';
 import useCategoriesStore from '../zustand/useCategoriesStore';
 import useWindowSize from '../hooks/useWindowSize';
+import AddCategoryModal from './AddCategoryModal';
 
 const TaskManager = () => {
 
@@ -40,6 +41,30 @@ const TaskManager = () => {
       return;
     }
 
+    // If the sorting criteria is the category name, handle the presence of admin tasks
+    if(sortBy === "categoryName") {
+      setSortedTasks(tasks.toSorted((a, b) => {
+        if(a.isAdminTask && b.isAdminTask) {
+          return 0;
+        }
+        if(a.isAdminTask) {
+          return -1;
+        }
+        if(b.isAdminTask) {
+          return 1;
+        }
+        
+        if(a.categoryName.toLowerCase() < b.categoryName.toLowerCase()){
+            return -1;
+        } else if(a.categoryName.toLowerCase() > b.categoryName.toLowerCase()){
+            return 1;
+        } else {
+            return 0;
+        }
+      }))
+      return;
+    }
+
     // Else, sort correctly the sortedTasks value
     setSortedTasks(tasks.toSorted((a, b) => {      
       if(a[sortBy].toLowerCase() < b[sortBy].toLowerCase()){
@@ -65,21 +90,29 @@ const TaskManager = () => {
 
   // Handle clicking on the add task button
   const handleTaskAdd = () => {
-      // Create an animated version of the AddTaskModal component using the react-spring animated function
+    // Create an animated version of the AddTaskModal component using the react-spring animated function
     const AnimatedAddTaskModal = animated(AddTaskModal);
 
     // Show the AddTask modal
     showModal(<AnimatedAddTaskModal />)
   }
 
+  const handleCategoryAdd = () => {
+    // Create an animated version of the AddCategoryModal component using the react-spring animated function
+    const AnimatedAddCategoryModal = animated(AddCategoryModal);
+
+    // Show the AddCategory modal
+    showModal(<AnimatedAddCategoryModal />)
+  }
+
   // Create an animated version of the Task component to use with react-spring transitions
   const AnimatedTask = animated(Task);
 
   return (
-    <main id='home-main'>
-      <div id='home-main-container'>
+    <div id='home-main-container' className={width < 850 ? 'full-width' : ''}>
+      <div id='home-main-content'>
         <input type="text" value={searchValue} onChange={(e) => setSearchValue(e.target.value.toLowerCase())} placeholder='Recherche une tâche...' id='search-bar' />
-        {width > 540 && (
+        {width > 580 && (
           <ul id='tasklist-header'>
             <TasklistHeaderElement label="Nom de la tâche" handleClick={() => setSortBy(sortBy === "title" ? null : "title")} isActive={sortBy === "title"} id='tasklist-header-task-title' />
             <TasklistHeaderElement label="Créateur" handleClick={() => setSortBy(sortBy === "owner" ? null : "owner")} isActive={sortBy === "owner"} id='tasklist-header-task-owner' />
@@ -96,10 +129,11 @@ const TaskManager = () => {
           ))}
         </ul>
       </div>
-      <div id='home-sticky-add-task-container'>
-        <AccentButton label="Ajouter une tâche" handleClick={handleTaskAdd} id='home-sticky-add-task-button' />
+      <div id='home-sticky-buttons-container'>
+        <AccentButton label="Ajouter une tâche" handleClick={handleTaskAdd} className='home-sticky-button' />
+        <AccentButton label="Ajouter une catégorie" handleClick={handleCategoryAdd} className='home-sticky-button' />
       </div>
-    </main>
+    </div>
   );
 }
 

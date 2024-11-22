@@ -10,4 +10,17 @@ header {
     top: 0;
     background-color: #fff;
     z-index: 10;
+
+    #header-logo {
+        .logo-main {
+            margin-right: 10px;
+        }
+    }
+
+    #header-buttons {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        height: 34px;
+    }
 }

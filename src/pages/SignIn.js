@@ -3,17 +3,20 @@ import Logo from '../components/Logo';
 import AuthInput from '../components/AuthInput';
 import AccentButton from '../components/AccentButton';
 import isEmail from 'validator/lib/isEmail';
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import AuthError from '../components/InputError';
 import useAuthStore from '../zustand/useAuthStore';
+import { useShallow } from 'zustand/shallow';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../firebase';
 
 const SignIn = () => {
 
   // Initialise the useNavigate hook to be able to navigate to other screens
   const navigate = useNavigate();
 
-  // Retrieve the loginUser function from the auth Zustand store
-  const loginUser = useAuthStore(state => state.loginUser);
+  // Retrieve the the loginUser and logOut functions from the auth Zustand store
+  const [loginUser, logOut] = useAuthStore(useShallow(state => [state.loginUser, state.logOut]));
 
   // Store all the AuthInput values
   const [form, setForm] = useState({
@@ -32,7 +35,7 @@ const SignIn = () => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
-    // Initialize a new empty array that will contain all the AuthInput value errors
+    // Initialize a new empty object that will contain all the AuthInput value errors
     const newErrors = {
       email: null,
       password: null,
@@ -63,7 +66,7 @@ const SignIn = () => {
 
     // If there is at least one error, add the new AuthInput value errors to the errors object and return
     if(Object.values(newErrors).some(value => value)){
-      console.log('Got an error before auth attempt');
+      console.warn('Got an error before auth attempt');
       setErrors(newErrors);
       return;
     }
@@ -72,9 +75,35 @@ const SignIn = () => {
     await loginUser(form.email, form.password)
       // If the user logged in successfully...
       .then(() => {
-        console.log("User signed in !");
-        // ...navigate to the home screen
-        navigate("../");
+        // Try to get the user's document to check if he's an admin or not
+        getDoc(doc(db, "users", useAuthStore.getState().user.uid))
+          // If the user's document was retrieved successfully, ensure the user in an admin
+          .then((userDoc) => {
+            // If the user is an admin, show the Loader and redirect the user to the Home page
+            if(userDoc.data().isAdmin){
+              console.log("User signed in !");
+
+              useAuthStore.setState({ isLoading: true });
+              setTimeout(() => {
+                useAuthStore.setState({ isLoading: false });
+              }, 50);
+
+              navigate("../");
+            // If the user is not an admin, log out the user and add the errors to the errors object
+            } else {
+              console.warn('Invalid credentials');
+
+              setErrors({ ...newErrors, credentials: "L'adresse email ou le mot de passe est incorrect." });
+              logOut();
+            }
+          })
+          // Else, handle errors that occured during the user's document retrieve
+          .catch((error) => {
+            console.error("An error occured while checking credentials : " + error.message);
+            
+            // Log out the user
+            logOut();
+          });
       })
       // Else, handle errors that occured during the login process
       .catch(error => {
@@ -90,7 +119,7 @@ const SignIn = () => {
 
         // If the email adress or the password is invalid...
         if (error.code === 'auth/invalid-credential') {
-          console.log('Invalid credentials');
+          console.warn('Invalid credentials');
 
           // ...store the error in the newErrors object
           newErrors.credentials = "L'adresse email ou le mot de passe est incorrect.";
@@ -102,20 +131,16 @@ const SignIn = () => {
   }
 
   return (
-    <div className='auth-page'>
-      <Logo fontSize={56} />
-      <form className='auth-form' onSubmit={handleFormSubmit}>
-        <h2 className='auth-title'>Se connecter</h2>
-        <div className='auth-inputs-container'>
+    <div id='signin-page'>
+      <Logo mainFontSize={56} subFontSize={30} id='signin-logo' />
+      <form className='signin-form' onSubmit={handleFormSubmit}>
+        <h2 className='signin-title'>Se connecter</h2>
+        <div className='signin-inputs-container'>
           <AuthInput label="Adresse email" value={form.email} handleInputChange={(e) => setForm({...form, email: e.target.value})} error={errors.email} />
           <AuthInput label="Password" value={form.password} handleInputChange={(e) => setForm({...form, password: e.target.value})} error={errors.password} isSecret={true} />
         </div>
         {errors.credentials && <AuthError label={errors.credentials} />}
-        <AccentButton label="Se connecter" className='auth-form-button' />
-        <div className='auth-switch-container'>
-          <span className='auth-switch-text'>Vous n'avez pas encore de compte ?</span>
-          <Link to="/signup" className='auth-switch-link'>Inscrivez-vous !</Link>
-        </div>
+        <AccentButton label="Se connecter" className='signin-form-button' />
       </form>
     </div>
   )

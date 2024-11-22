@@ -2,4 +2,11 @@
     display: flex;
     flex-direction: column;
     height: 100vh;
+
+    #home-main {
+        width: 100vw;
+        flex-grow: 1;
+        overflow: auto;
+        display: flex;
+    }    
 }

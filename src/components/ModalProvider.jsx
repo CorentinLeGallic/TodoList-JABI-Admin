@@ -4,7 +4,7 @@ import { useTransition } from 'react-spring';
 
 const ModalProvider = ({ children }) => {
 
-    // Retrieve the current modal from the he modal Zustand store
+    // Retrieve the current modal from the modal Zustand store
     const modal = useModalStore(state => state.modal);
 
     // Set up transitions for animating modal elements using react-spring

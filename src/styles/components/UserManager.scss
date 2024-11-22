@@ -1,0 +1,33 @@
+#user-manager {
+    border-left: 2px solid black;
+    height: 100%;
+    background-color: #fff;
+    z-index: 10;
+    overflow-y: scroll;
+
+    &.desktop {
+        width: 300px;
+    }
+
+    &.mobile {
+        position: fixed;
+        top: 55px;
+        width: 100%;
+        transition: .2s;
+
+        &.active {
+            left: 0;
+        }
+
+        &:not(.active){
+            left: calc(100vw + 50px);
+        }
+    }
+
+    #user-manager-title {
+        text-align: center;
+        font-family: 'Poppins', sans-serif;
+        margin: 10px 0;
+        font-size: 22px;
+    }
+}

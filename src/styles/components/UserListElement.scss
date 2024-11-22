@@ -1,0 +1,47 @@
+.user-list-element {
+    width: 100%;
+    height: 50px;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+
+    @media (min-width: 350px) {
+        &.mobile {
+            justify-content: center;
+            gap: 50px;
+
+            .username {
+                flex-grow: 0;
+                width: 300px;
+            }
+        }
+    }
+
+    .username {
+        font-family: sans-serif;
+        flex-grow: 1;
+        text-align: center;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        word-break: break-all;
+        white-space: nowrap;
+        padding: 5px;
+    }
+
+    .promote-user-button {
+        display: grid;
+        place-items: center;
+        height: fit-content;
+        padding: 0 10px;
+        height: 30px;
+        border: none;
+        border-radius: 15px;
+        background-color: $secondary;
+        color: #FFF;
+        font-family: "Poppins", sans-serif;
+        font-weight: 600;
+        margin-right: 10px;
+        cursor: pointer;
+    }
+}

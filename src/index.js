@@ -3,26 +3,22 @@ import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import './styles/index.scss';
 import Home from './pages/Home';
-import SignUp from './pages/SignUp';
 import SignIn from './pages/SignIn';
 import NoPage from './pages/NoPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import DatabaseInitializer from './components/DatabaseInitializer';
 import ModalProvider from './components/ModalProvider';
+import Loader from './components/Loader';
 
 // Create a Router
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <ProtectedRoute><Home /></ProtectedRoute>,
-  },
-  {
-    path: "/signup",
-    element: <SignUp />
+    element: <Loader><ProtectedRoute><Home /></ProtectedRoute></Loader>,
   },
   {
     path: "/signin",
-    element: <SignIn />
+    element: <Loader><SignIn /></Loader>
   },
   {
     path: "*",

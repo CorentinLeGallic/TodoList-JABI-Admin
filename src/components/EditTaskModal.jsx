@@ -34,7 +34,7 @@ const EditTaskModal = ({ task, style={} }) => {
     // Handle the task editing form submit
     const handleformSubmit = () => {
 
-        // Initialize a new empty array that will contain all the form input values errors
+        // Initialize a new empty object that will contain all the form input values errors
         const newErrors = {
             taskTitle: null,
             taskDescription: null,
@@ -72,13 +72,13 @@ const EditTaskModal = ({ task, style={} }) => {
         }
         
         // Try to edit the task using the editTask function
-        editTask(task.id, form.taskTitle, form.taskDescription, form.categoryId)
-            // If the task was added successfully...
+        editTask(task.id, form.taskTitle, form.taskDescription, task.isAdminTask ? null : form.categoryId)
+            // If the task was edited successfully...
             .then(() => {
                 // ...hide the modal
                 hideModal();
             })
-            // Else, handle errors that occured during the task adding process
+            // Else, handle errors that occured during the task editing process
             .catch(error => {
                 console.error(error);
 
@@ -98,13 +98,15 @@ const EditTaskModal = ({ task, style={} }) => {
             <FormInputContainer label='Description' error={errors.taskDescription} className='task-form-input-container'>
                 <textarea className="task-form-input task-form-textarea" value={form.taskDescription} onChange={(e) => setForm({ ...form, taskDescription: e.target.value})} rows={3} />
             </FormInputContainer>
-            <FormInputContainer label='Catégorie' error={errors.categoryId} className='task-form-input-container'>
-                <select className='task-form-select' value={form.categoryId} onChange={(e) => setForm({ ...form, categoryId: e.target.value})}>
-                    {categories.map(category => (
-                        <option key={category.id} value={category.id}>{category.name + (category.description ? " - " + category.description : "")}</option>
-                    ))}
-                </select>
-            </FormInputContainer>
+            {!task.isAdminTask && (
+                <FormInputContainer label='Catégorie' error={errors.categoryId} className='task-form-input-container'>
+                    <select className='task-form-select' value={form.categoryId} onChange={(e) => setForm({ ...form, categoryId: e.target.value})}>
+                        {categories.map(category => (
+                            <option key={category.id} value={category.id}>{category.name + (category.description ? " - " + category.description : "")}</option>
+                        ))}
+                    </select>
+                </FormInputContainer>
+            )}
         </FormModal>
     );
 }

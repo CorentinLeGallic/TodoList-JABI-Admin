@@ -1,0 +1,14 @@
+.toggle-users-menu-button {
+    height: 100%;
+    aspect-ratio: 1 / 1;
+    background-color: transparent;
+    border: none;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+
+    .toggle-users-menu-icon {
+        width: 30px;
+        height: 30px;
+    }
+}

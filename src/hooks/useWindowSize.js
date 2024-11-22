@@ -19,6 +19,8 @@ const useWindowSize = () => {
     // Update the screen dimensions when the window is resized
     useEffect(() => {
         window.addEventListener("resize", handleResize);
+
+        // Remove the event listener when the component unmounts
         return () => {
             window.removeEventListener("resize", handleResize)
         };

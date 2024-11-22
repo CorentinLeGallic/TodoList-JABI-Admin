@@ -12,7 +12,7 @@ const firebaseConfig = {
   projectId: "todo-list-onboarding",
   storageBucket: "todo-list-onboarding.firebasestorage.app",
   messagingSenderId: "958413484348",
-  appId: "1:958413484348:web:e76f34f9d11b3a35fdae39"
+  appId: "1:958413484348:web:fd2fd106ad992029fdae39"
 };
 
 // Initialize Firebase

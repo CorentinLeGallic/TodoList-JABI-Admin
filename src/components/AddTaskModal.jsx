@@ -23,6 +23,9 @@ const AddTaskModal = ({ style={} }) => {
     categoryId: categories.length > 0 ? categories[0].id : "Select a category"
   });
 
+  // State to store whether the new task is an admin task or not
+  const [isAdminTask, setIsAdminTask] = useState(false);
+
   // Store all the form input values errors
   const [errors, setErrors] = useState({
     taskTitle: null,
@@ -32,9 +35,9 @@ const AddTaskModal = ({ style={} }) => {
   });
 
   // Handle the task adding form submit
-  const handleformSubmit = () => {
+  const handleFormSubmit = () => {
 
-    // Initialize a new empty array that will contain all the form input values errors
+    // Initialize a new empty object that will contain all the form input values errors
     const newErrors = {
       taskTitle: null,
       taskDescription: null,
@@ -72,7 +75,7 @@ const AddTaskModal = ({ style={} }) => {
     }
 
     // Try to add the task using the addTask function
-    addTask(form.taskTitle, form.taskDescription, form.categoryId)
+    addTask(form.taskTitle, form.taskDescription, isAdminTask, form.categoryId)
       // If the task was added successfully...
       .then(() => {
           // ...hide the modal
@@ -82,7 +85,7 @@ const AddTaskModal = ({ style={} }) => {
       .catch(error => {
         console.error(error);
 
-        // Store the error in the newErrors object
+        // Store the error in the errors object
         setErrors({
           ...errors,
           global: "Une erreur est survenue, veuillez réessayer ultérieurement."
@@ -91,13 +94,24 @@ const AddTaskModal = ({ style={} }) => {
   }
 
   return (
-      <FormModal label="Ajouter une tâche" handleSubmit={handleformSubmit} errors={errors} style={style}>
-          <FormInputContainer label='Nom' error={errors.taskTitle} className='task-form-input-container'>
-              <input type="text" className="task-form-input task-form-text-input" value={form.taskTitle} onChange={(e) => setForm({ ...form, taskTitle: e.target.value})} />
-          </FormInputContainer>
-          <FormInputContainer label='Description' error={errors.taskDescription} className='task-form-input-container'>
-              <textarea className="task-form-input task-form-textarea" value={form.taskDescription} onChange={(e) => setForm({ ...form, taskDescription: e.target.value})} rows={3} />
-          </FormInputContainer>
+    <FormModal label="Ajouter une tâche" handleSubmit={handleFormSubmit} errors={errors} style={style}>
+        <FormInputContainer label='Nom' error={errors.taskTitle} className='task-form-input-container'>
+            <input type="text" className="task-form-input task-form-text-input" value={form.taskTitle} onChange={(e) => setForm({ ...form, taskTitle: e.target.value})} />
+        </FormInputContainer>
+        <FormInputContainer label='Description' error={errors.taskDescription} className='task-form-input-container'>
+            <textarea className="task-form-input task-form-textarea" value={form.taskDescription} onChange={(e) => setForm({ ...form, taskDescription: e.target.value})} rows={3} />
+        </FormInputContainer>
+        <FormInputContainer label="Tâche d'administration" className='task-form-input-container'>
+          <div className='task-form-radio-container'>
+            <input type="radio" className='task-form-radio' name='admin-task-radio' id='is-admin-task' checked={isAdminTask} onChange={() => setIsAdminTask(true)} />
+            <label className='task-form-radio-label' htmlFor='is-admin-task'>Oui</label>
+          </div>
+          <div className='task-form-radio-container'>
+            <input type="radio" className='task-form-radio' name='admin-task-radio' id='is-not-admin-task' checked={!isAdminTask} onChange={() => setIsAdminTask(false)} />
+            <label className='task-form-radio-label' htmlFor='is-not-admin-task'>Non</label>
+          </div>
+        </FormInputContainer>
+        {!isAdminTask && (
           <FormInputContainer label='Catégorie' error={errors.categoryId} className='task-form-input-container'>
               <select className='task-form-select' value={form.categoryId} onChange={(e) => setForm({ ...form, categoryId: e.target.value})}>
                   {categories.map(category => (
@@ -105,7 +119,8 @@ const AddTaskModal = ({ style={} }) => {
                   ))}
               </select>
           </FormInputContainer>
-      </FormModal>
+        )}
+    </FormModal>
   );
 }
 
